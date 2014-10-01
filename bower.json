@@ -1,0 +1,30 @@
+{
+  "name": "angular-paylogic-shopping-service",
+  "version": "0.0.1",
+  "authors": [
+    "Spyros Ioakeimidis <spyrosikmd@gmail.com>"
+  ],
+  "description": "An AngularJS service that encapsulates the functionality provided by Paylogic Shopping Service.",
+  "main": "angular-paylogic-shopping-service.js",
+  "keywords": [
+    "angularjs",
+    "service",
+    "api",
+    "paylogic",
+    "ticketing",
+    "shopping"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.22",
+    "angular-resource": "~1.2.22",
+    "angular-base64": "~2.0.2"
+  }
+}

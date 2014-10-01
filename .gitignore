@@ -1,0 +1,4 @@
+private.*
+bower_components
+*.js
+.idea
