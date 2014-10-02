@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AngularJS Paylogic Shopping Service API Demo</title>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+  <script src="bower_components/angular-base64/angular-base64.min.js"></script>
+
+  <script src="angular-paylogic-shopping-service.js"></script>
+</head>
+<body ng-app="demoApp">
+
+  <div ng-controller="mainController">
+    <div ng-show="events[0]">
+      <h1>Events</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>URI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="event in events">
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+  (function() {
+    "use strict";
+
+    angular.module("demoApp", ["angular-paylogic-shopping-service"])
+      .controller("mainController", function($scope, paylogicShoppingService) {
+
+        /*
+         * The following example demonstrates a complete buying process.
+         *
+         * We start by getting all events and we use one of them to buy tickets.
+         */
+        var events = paylogicShoppingService.events.query(function() {
+
+          $scope.events = events;
+
+        });
+
+      });
+
+  }).call(this);
+  </script>
+</body>
+</html>

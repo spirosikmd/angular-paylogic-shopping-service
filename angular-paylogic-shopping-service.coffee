@@ -6,9 +6,7 @@ angular.module 'angular-paylogic-shopping-service', [
 ]
   .run ($http, apiToken) ->
     $http.defaults.headers.common.Authorization = 'Basic ' + apiToken
-  .service 'paylogic', (Event, Bill, Order) ->
+  .service 'paylogicShoppingService', (Event) ->
     {
-      events: Event,
-      bill: Bill,
-      orders: Order
+      events: Event
     }
