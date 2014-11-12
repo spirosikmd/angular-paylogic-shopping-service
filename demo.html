@@ -40,15 +40,15 @@
       .controller("mainController", function($scope, paylogicShoppingService) {
 
         /*
+         *
          * The following example demonstrates a complete buying process.
          *
-         * We start by getting all events and we use one of them to buy tickets.
          */
-        var events = paylogicShoppingService.events.query(function() {
+        paylogicShoppingService.events.query(function(events) {
 
           $scope.events = events["_embedded"]["shop:event"];
 
-          var products = paylogicShoppingService.products.query(function() {
+          paylogicShoppingService.products.query(function(products) {
 
             $scope.products = products["_embedded"]["shop:product"];
 
@@ -59,7 +59,7 @@
               "country": "NL"
             };
 
-            var bill = paylogicShoppingService.bill.get(params, function() {
+            paylogicShoppingService.bill.get(params, function(bill) {
 
               $scope.bill = bill;
 
@@ -92,7 +92,7 @@
                 "shipping_method": shippingMethodUid
               };
 
-              var order = paylogicShoppingService.orders.create(orderParams, function() {
+              paylogicShoppingService.orders.create(orderParams, function(order) {
 
                 console.log(order);
 
