@@ -17,13 +17,14 @@
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>URI</th>
+            <th>Title</th>
+            <th>Subtitle</th>
           </tr>
         </thead>
         <tbody>
           <tr ng-repeat="event in events">
-
+            <td>{{event.title.en}}</td>
+            <td>{{event.subtitle.en}}</td>
           </tr>
         </tbody>
       </table>
@@ -45,7 +46,61 @@
          */
         var events = paylogicShoppingService.events.query(function() {
 
-          $scope.events = events;
+          $scope.events = events["_embedded"]["shop:event"];
+
+          var products = paylogicShoppingService.products.query(function() {
+
+            $scope.products = products["_embedded"]["shop:product"];
+
+            var productUri = $scope.products[0]["_links"]["self"]["href"];
+
+            var params = {
+              "products": productUri + ",2",
+              "country": "NL"
+            };
+
+            var bill = paylogicShoppingService.bill.get(params, function() {
+
+              $scope.bill = bill;
+
+              var consumer =  {
+                "first_name": "John",
+                "last_name": "Doe",
+                "date_of_birth": "1986-12-30",
+                "email": "john.doe@paylogic.eu",
+                "gender": "1",
+                "address": "Nieuwe Boteringestraat 28",
+                "postal_code": "9716 JJ",
+                "city": "Groningen",
+                "country": "NL",
+                "ip": "192.168.1.1"
+              };
+
+              var paymentMethodUid = $scope.bill["payment_methods"][0]["uid"];
+
+              var shippingMethodUid = $scope.bill["shipping_methods"][0]["uid"];
+
+              var productData = {
+                "product": productUri,
+                "quantity": 2
+              };
+
+              var orderParams = {
+                "products": [productData],
+                "consumer": consumer,
+                "payment_method": paymentMethodUid,
+                "shipping_method": shippingMethodUid
+              };
+
+              var order = paylogicShoppingService.orders.create(orderParams, function() {
+
+                console.log(order);
+
+              });
+
+            });
+
+          });
 
         });
 
