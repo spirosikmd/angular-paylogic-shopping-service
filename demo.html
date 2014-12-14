@@ -40,15 +40,6 @@
 
     var apiKey, apiSecret;
 
-    // Load the privates and bootstrap the app asynchronously.
-    $.get("private.json", function(response) {
-      apiKey = response.apiKey;
-      apiSecret = response.apiSecret;
-      angular.element(document).ready(function() {
-        angular.bootstrap(document, ["demoApp"]);
-      });
-    });
-
     angular.module("demoApp", ["angular-paylogic-shopping-service"])
       .config(function(paylogicShoppingServiceProvider) {
         // Configure the shopping service api with key and secret.
@@ -127,6 +118,15 @@
         });
 
       });
+
+    // Load the privates and bootstrap the app asynchronously.
+    $.get("private.json", function(response) {
+      apiKey = response.apiKey;
+      apiSecret = response.apiSecret;
+      angular.element(document).ready(function() {
+        angular.bootstrap(document, ["demoApp"]);
+      });
+    });
 
   }).call(this);
   </script>
