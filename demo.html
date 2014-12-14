@@ -3,13 +3,15 @@
 <head>
   <title>AngularJS Paylogic Shopping Service API Demo</title>
 
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
   <script src="bower_components/angular/angular.min.js"></script>
   <script src="bower_components/angular-resource/angular-resource.min.js"></script>
   <script src="bower_components/angular-base64/angular-base64.min.js"></script>
 
-  <script src="angular-paylogic-shopping-service.js"></script>
+  <script src="angular.paylogic.shopping.service.js"></script>
 </head>
-<body ng-app="demoApp">
+<body>
 
   <div ng-controller="mainController">
     <div ng-show="events[0]">
@@ -36,7 +38,25 @@
   (function() {
     "use strict";
 
+    var apiKey, apiSecret;
+
+    // Load the privates and bootstrap the app asynchronously.
+    $.get("private.json", function(response) {
+      apiKey = response.apiKey;
+      apiSecret = response.apiSecret;
+      angular.element(document).ready(function() {
+        angular.bootstrap(document, ["demoApp"]);
+      });
+    });
+
     angular.module("demoApp", ["angular-paylogic-shopping-service"])
+      .config(function(paylogicShoppingServiceProvider) {
+        // Configure the shopping service api with key and secret.
+        paylogicShoppingServiceProvider.configure({
+          "apiKey": apiKey,
+          "apiSecret": apiSecret
+        });
+      })
       .controller("mainController", function($scope, paylogicShoppingService) {
 
         /*
@@ -48,14 +68,16 @@
 
           $scope.events = events["_embedded"]["shop:event"];
 
-          paylogicShoppingService.products.query(function(products) {
+          var eventUri = $scope.events[0]["_links"]["self"]["href"];
+
+          paylogicShoppingService.products.query({'event': eventUri}, function(products) {
 
             $scope.products = products["_embedded"]["shop:product"];
 
-            var productUri = $scope.products[0]["_links"]["self"]["href"];
+            var productUri = $scope.products[1]["_links"]["self"]["href"];
 
             var params = {
-              "products": productUri + ",2",
+              "products": productUri + ",1",
               "country": "NL"
             };
 
@@ -76,13 +98,13 @@
                 "ip": "192.168.1.1"
               };
 
-              var paymentMethodUid = $scope.bill["payment_methods"][0]["uid"];
+              var paymentMethodUid = $scope.bill["available_payment_methods"][1]["uid"];
 
-              var shippingMethodUid = $scope.bill["shipping_methods"][0]["uid"];
+              var shippingMethodUid = $scope.bill["available_shipping_methods"][6]["uid"];
 
               var productData = {
                 "product": productUri,
-                "quantity": 2
+                "quantity": 1
               };
 
               var orderParams = {
