@@ -1,4 +1,37 @@
 angular-paylogic-shopping-service
 =================================
 
-An AngularJS service that encapsulates the functionality provided by Paylogic Shopping Service.
+An [AngularJS](https://angularjs.org/) service that encapsulates the functionality provided by the [Paylogic Shopping Service](https://shopping-service-docs.sandbox.paylogic.com/).
+
+## Getting Started
+
+``angular-paylogic-shopping-service`` requires [Bower](http://bower.io/) and [CoffeeScript](http://coffeescript.org/).
+
+Run ``bower install`` from the root directory of the project to install all the dependencies.
+
+Start a web server, e.g. ``python -m SimpleHTTPServer`` from the root directory of the project and check the demo at [http://localhost:8000/demo.html](http://localhost:8000/demo.html).
+
+The example will not work for the public (unfortunately..) as it requires basic authentication to access the API, and credentials are not provided.
+
+## How to use
+
+``angular-paylogic-shopping-service`` exposes a single ``paylogicShoppingService`` component that can be used in the following way to interact with resources.
+
+```javascript
+// Inject the angular-paylogic-shopping-service module.
+angular.module("app", ["angular-paylogic-shopping-service"])
+  // Inject the paylogicShoppingService service in a controller.
+  .controller("mainController", function($scope, paylogicShoppingService) {
+
+    // Will return all, as no filtering was specified.
+    $scope.events = paylogicShoppingService.events.query();
+
+    // products.get works, even if it is not defined in Product service, as it is a standard method of $resource.
+    $scope.product = paylogicShoppingService.products.get({
+      productUid: "30df20dd0b0e4bc58f0663edc8a4f640"
+    });
+
+});
+```
+
+There is a more [detailed example](https://github.com/spirosikmd/angular-paylogic-shopping-service/blob/master/demo.html) that demonstrates a complete buying process.
