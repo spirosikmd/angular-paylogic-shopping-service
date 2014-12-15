@@ -5,7 +5,7 @@
     "Spyros Ioakeimidis <spyrosikmd@gmail.com>"
   ],
   "description": "An AngularJS service that encapsulates the functionality provided by Paylogic Shopping Service.",
-  "main": "angular-paylogic-shopping-service.js",
+  "main": "angular.paylogic.shopping.service.js",
   "keywords": [
     "angularjs",
     "service",
@@ -23,8 +23,8 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.3.2",
-    "angular-resource": "~1.3.2",
+    "angular": "~1.3.6",
+    "angular-resource": "~1.3.6",
     "angular-base64": "~2.0.2"
   }
 }
