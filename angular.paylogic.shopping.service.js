@@ -4,7 +4,9 @@
   angular.module('angular-paylogic-shopping-service', ['ngResource', 'base64']).provider('paylogicShoppingServiceConfig', function() {
     var config;
     config = {
-      baseURL: ''
+      baseURL: '',
+      apiKey: '',
+      apiSecret: ''
     };
     return {
       set: function(settings) {

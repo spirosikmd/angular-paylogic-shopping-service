@@ -7,6 +7,8 @@ angular.module 'angular-paylogic-shopping-service', [
   .provider 'paylogicShoppingServiceConfig', ->
     config =
       baseURL: ''
+      apiKey: ''
+      apiSecret: ''
 
     {
       set: (settings) ->
