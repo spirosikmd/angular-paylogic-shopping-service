@@ -38,15 +38,16 @@
   (function() {
     "use strict";
 
-    var apiKey, apiSecret;
+    var apiKey, apiSecret, baseURL;
 
     angular.module("demoApp", ["angular-paylogic-shopping-service"])
-      .config(function(paylogicShoppingServiceProvider) {
-        // Configure the shopping service api with key and secret.
-        paylogicShoppingServiceProvider.configure({
+      .config(function(paylogicShoppingServiceConfigProvider) {
+        // Configure the shopping service api with key, secret and base URL.
+        paylogicShoppingServiceConfigProvider.set({
           "apiKey": apiKey,
-          "apiSecret": apiSecret
-        });
+          "apiSecret": apiSecret,
+          "baseURL": baseURL
+        })
       })
       .controller("mainController", function($scope, paylogicShoppingService) {
 
@@ -59,11 +60,21 @@
 
           $scope.events = events["_embedded"]["shop:event"];
 
+          if ($scope.events.length == 0) {
+            alert("There are no events at the moment.");
+            return;
+          }
+
           var eventUri = $scope.events[0]["_links"]["self"]["href"];
 
           paylogicShoppingService.products.query({'event': eventUri}, function(products) {
 
             $scope.products = products["_embedded"]["shop:product"];
+
+            if ($scope.products.length == 0) {
+              alert("The selected events has not products.");
+              return;
+            }
 
             var productUri = $scope.products[1]["_links"]["self"]["href"];
 
@@ -123,6 +134,7 @@
     $.get("private.json", function(response) {
       apiKey = response.apiKey;
       apiSecret = response.apiSecret;
+      baseURL = response.baseURL;
       angular.element(document).ready(function() {
         angular.bootstrap(document, ["demoApp"]);
       });

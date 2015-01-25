@@ -2,26 +2,28 @@
 
 angular.module 'angular-paylogic-shopping-service', [
   'ngResource',
-  'base64'
+  'base64',
 ]
-  .provider 'paylogicShoppingService', ->
+  .provider 'paylogicShoppingServiceConfig', ->
+    config =
+      baseURL: ''
 
-    options = {}
+    {
+      set: (settings) ->
+        config = settings
+      ,
+      $get: ->
+        return config;
+    }
 
-    @configure = (opts) =>
-      angular.extend options, opts
-      return
+  .run ($http, $base64, paylogicShoppingServiceConfig) ->
+    auth = $base64.encode(paylogicShoppingServiceConfig.apiKey + ':' + paylogicShoppingServiceConfig.apiSecret);
+    $http.defaults.headers.common.Authorization = 'Basic ' + auth
 
-    @$get = ($http, $base64, Event, Product, Bill, Order) =>
-      auth = $base64.encode(options.apiKey + ':' + options.apiSecret);
-      $http.defaults.headers.common.Authorization = 'Basic ' + auth
-      {
-        events: Event,
-        products: Product,
-        bill: Bill,
-        orders: Order
-      }
-
-    @
-
-  .constant 'baseUrl', 'https://shopping-service.sandbox.paylogic.com/'
+  .service 'paylogicShoppingService', (Event, Product, Bill, Order)  ->
+    {
+      events: Event,
+      products: Product,
+      bill: Bill,
+      orders: Order
+    }
